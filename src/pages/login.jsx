@@ -118,7 +118,7 @@ export default function Login() {
         </div>
 
         {/* Right section - Image */}
-        <div className="w-1/2 flex flex-col mt-4 justify-center items-center">
+        <div className="w-1/2 flex flex-col mt-6 justify-center items-center">
         <img
             src="../public/logo.png"
             alt="Login"
