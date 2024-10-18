@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 export default function Login() {
   const validateEmail = (email) => {
@@ -13,7 +11,7 @@ export default function Login() {
   const [loginStatus, setLoginStatus] = useState('');
   const [statusHolder, setStatusHolder] = useState('');
 
-  const createUser = (e) => {
+  const handleSignIn = (e) => {
     e.preventDefault();
     setLoginStatus('');
 
@@ -103,6 +101,7 @@ export default function Login() {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-[#3EA0A3] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#2d9599] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                onClick={handleSignIn}
               >
                 Continue
               </button>
