@@ -11,10 +11,10 @@ import BandwidthModal from './BandwidthModal'; // Import the modal component
 const chartConfig = {
     type: "pie",
     height: 240,
-    series: [45, 55], // Bandwidth values: 45% for Client 1 and 55% for Client 2
+    series: [40, 35, 25], // Updated series to ensure it adds up to 100%: 40% for Client 1, 35% for Client 2, 25% for Not allocated
     options: {
-        labels: ["Client 1", "Client 2"], // Labels for the two clients
-        colors: ["#C7F5C7", "#3EA0A3"], // Colors for Client 1 and Client 2
+        labels: ["Client 1", "Client 2", "Not allocated"], // Labels for the clients and the "Not allocated" part
+        colors: ["#C7F5C7", "#3EA0A3", "#EEEEEE"], // Colors for Client 1, Client 2, and Not allocated
         legend: {
             position: 'bottom', // Adjust legend position
             labels: {

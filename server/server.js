@@ -59,66 +59,12 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// Route to create a new Admin (for demonstration purposes)
-app.post('/admin', async (req, res) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Missing email or password' });
-    }
-
-    try {
-        const connection = await mysql.createConnection(dbConfig);
-
-        // Hash the password before storing it
-        const hashedPassword = await bcrypt.hash(password, 10);
-        
-        // Insert the new admin user with the hashed password
-        const [result] = await connection.execute('INSERT INTO Admin (email, password) VALUES (?, ?)', [email, hashedPassword]);
-        
-        res.status(201).json({ id: result.insertId, email });
-    } catch (error) {
-        console.error('Error creating admin:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
-
-// Route to get all Clients
-app.get('/clients', async (req, res) => {
-    try {
-        const connection = await mysql.createConnection(dbConfig);
-        const [clients] = await connection.execute('SELECT * FROM Client');
-        res.json(clients);
-    } catch (error) {
-        console.error('Error fetching clients:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
-
-// Route to create a new Client
-app.post('/clients', async (req, res) => {
-    const { ipAddress, status, name } = req.body;
-
-    if (!ipAddress || !status || !name) {
-        return res.status(400).json({ message: 'Missing required fields' });
-    }
-
-    try {
-        const connection = await mysql.createConnection(dbConfig);
-        const [result] = await connection.execute('INSERT INTO Client (ipAddress, status, name) VALUES (?, ?, ?)', [ipAddress, status, name]);
-        res.status(201).json({ id: result.insertId, ipAddress, status, name });
-    } catch (error) {
-        console.error('Error creating client:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
-
-// Route to get all Bandwidth records
+// Route to fetch all Bandwidth records
 app.get('/bandwidth', async (req, res) => {
     try {
         const connection = await mysql.createConnection(dbConfig);
-        const [bandwidthRecords] = await connection.execute('SELECT * FROM Bandwidth');
-        res.json(bandwidthRecords);
+        const [rows] = await connection.execute('SELECT * FROM Bandwidth'); // Fetch all records
+        res.json(rows);
     } catch (error) {
         console.error('Error fetching bandwidth records:', error);
         res.status(500).json({ message: 'Internal server error' });
