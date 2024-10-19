@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 export default function Login() {
+  const navigate = useNavigate(); // Initialize the navigate function
+
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -11,10 +14,11 @@ export default function Login() {
   const [loginStatus, setLoginStatus] = useState('');
   const [statusHolder, setStatusHolder] = useState('');
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     setLoginStatus('');
 
+    // Frontend validation
     if (email === '' || password === '') {
       setLoginStatus('Missing information');
       return;
@@ -23,6 +27,35 @@ export default function Login() {
     if (!validateEmail(email)) {
       setLoginStatus("Incorrect email format");
       return;
+    }
+    console.log('Logging in with:', { email, password });
+    try {
+      // Send login request to backend
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Login successful, redirect to dashboard
+        setLoginStatus('Login successful');
+        navigate('/dashboard'); // Redirect to dashboard
+      } else {
+        // Handle error from backend (e.g., incorrect credentials)
+        setLoginStatus(data.message || 'Login failed');
+      }
+    } catch (error) {
+      // Handle network errors or other unexpected errors
+      setLoginStatus('Something went wrong. Please try again.');
+      console.error('Error:', error);
     }
   };
 
@@ -67,7 +100,7 @@ export default function Login() {
                 <input
                   id="email"
                   name="email"
-                  type="email"
+                  type="email" 
                   autoComplete="email"
                   required
                   placeholder="Enter your email"
