@@ -125,39 +125,50 @@ export default function Dashboard() {
       </Disclosure>
 
       <main className='flex flex-col'>
-        <div className='flex flex-row justify-around mx-12 my-6'>
-          <div className='bg-white w-96 rounded-md mr-12'>
-            <div>
-              <h1 className="font-semibold ml-6 mt-6">Topology</h1>
-            </div>
-            <img className='mt-12 my-6 ml-8' src="../../public/topology.png" alt="topology" />
-          </div>
-          <Table />
-        </div>
 
-        <div className='flex flex-col mx-12 my-6 md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-6'>
-          <div className='bg-white rounded-md shadow flex-1 '>
-            <PieChart />
-          </div>
-          <div className='bg-white rounded-md shadow flex-1'>
-            <Chart />
-          </div>
-          <div className='flex flex-col justify-between'>
-            <div className='bg-[#3EA0A3] rounded-md px-4 py-4 text-center'>
-              <h1 className='text-2xl font-semibold'>Max Bandwidth Offer</h1>
-              <p className='text-3xl font-bold'>10 Mbps</p>
-            </div>
-            <div className='bg-white rounded-md px-4 py-4 text-center'>
-              <h1 className='text-2xl font-semibold'>Client's Number</h1>
-              <p className='text-3xl font-bold'>2</p>
-            </div>
-            <div className='bg-[#C7F5C7] rounded-md px-4 py-4 text-center'>
-              <h1 className='text-2xl font-semibold'>Online Client's Number</h1>
-              <p className='text-3xl font-bold'>2</p>
-            </div>
-          </div>
-        </div>
-      </main>
+<div className='flex flex-row justify-around mx-12 my-6'>
+<div className='bg-white w-96 rounded-md mr-12'>
+<div>
+      <h1 className="font-semibold ml-6 mt-6">
+          Topology
+      </h1>
+  </div>
+<img 
+className='mt-12 my-6 ml-8'
+src="../../public/topology.png" alt="topology" />
+</div>
+
+   <Table />
+    
+</div>
+
+<div className='flex flex-col mx-12 my-6 md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-6'>
+<div className='bg-white rounded-md shadow flex-1 '>
+<PieChart />
+</div>
+<div className='bg-white rounded-md shadow flex-1'>
+<Chart />
+</div>
+<div className='flex flex-col justify-between'>
+      < div className='bg-[#3EA0A3] rounded-md px-4 py-4 text-center'>
+          <h1 className='text-2xl font-semibold'>Max Bandwith Offer</h1> 
+          <p className='text-3xl font-bold'>10 Mbps</p>
+      </div>
+      < div className='bg-white rounded-md px-4 py-4 text-center'>
+          <h1 className='text-2xl font-semibold'>Client's Number</h1>
+          <p className='text-3xl font-bold'> 2</p>
+      </div>
+      < div className='bg-[#C7F5C7] rounded-md px-4 py-4 text-center'>
+          <h1 className='text-2xl font-semibold'>Online Client's Number</h1> 
+          <p className='text-3xl font-bold'> 2</p>
+      </div>
+</div>
+
+
+</div>
+
+
+</main>
     </div>
   );
 }
