@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2/promise'); // Use promise-based MySQL2
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const bcrypt = require('bcryptjs'); // Import bcrypt
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,7 +14,6 @@ app.use(cors({
     methods: ['GET', 'POST'], // Specify allowed methods
     credentials: true // If you need to allow cookies or other credentials
 }));
-
 
 // Database connection configuration
 const dbConfig = {
@@ -31,23 +31,54 @@ app.post('/login', async (req, res) => {
     if (!email || !password) {
         return res.status(400).json({ message: 'Missing email or password' });
     }
-   
+
     try {
         // Connect to the database
         const connection = await mysql.createConnection(dbConfig);
 
-        // Query to find the admin user by email and password
-        const [rows] = await connection.execute('SELECT * FROM Admin WHERE email = ? AND password = ?', [email, password]);
+        // Query to find the admin user by email
+        const [rows] = await connection.execute('SELECT * FROM Admin WHERE email = ?', [email]);
 
         if (rows.length > 0) {
-            // Admin found, send a success message
-            return res.json({ message: 'Login successful', admin: { id: rows[0].id, email: rows[0].email } });
+            const user = rows[0];
+            // Compare the provided password with the hashed password stored in the database
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (isMatch) {
+                // Admin found, send a success message
+                return res.json({ message: 'Login successful', admin: { id: user.id, email: user.email } });
+            } else {
+                return res.status(401).json({ message: 'Invalid email or password' });
+            }
         } else {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
     } catch (error) {
         console.error('Database connection error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Route to create a new Admin (for demonstration purposes)
+app.post('/admin', async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Missing email or password' });
+    }
+
+    try {
+        const connection = await mysql.createConnection(dbConfig);
+
+        // Hash the password before storing it
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        // Insert the new admin user with the hashed password
+        const [result] = await connection.execute('INSERT INTO Admin (email, password) VALUES (?, ?)', [email, hashedPassword]);
+        
+        res.status(201).json({ id: result.insertId, email });
+    } catch (error) {
+        console.error('Error creating admin:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
