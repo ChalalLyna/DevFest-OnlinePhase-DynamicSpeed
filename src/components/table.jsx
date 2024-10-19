@@ -35,9 +35,9 @@ export default function Table() {
     return (
         <div className="bg-white w-2/3 p-6 rounded-md ">
             <div>
-            <h1 className="font-semibold ml-6 mb-6">
-                        Connection speed by client over time
-                    </h1>
+                <h1 className="font-semibold ml-6 mb-6">
+                    Connection speed by client over time
+                </h1>
             </div>
             {/* Filters */}
             <div className="flex mb-4">
@@ -71,57 +71,48 @@ export default function Table() {
             </div>
 
             {/* Table */}
-            <table className="text-center w-full">
-                <thead>
-                    <tr>
-                        {TABLE_HEAD.map((head) => (
-                            <th
-                                key={head}
-                                className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
-                            >
-                                <Typography
-                                    variant="small"
-                                    color="blue-gray"
-                                    className="font-normal leading-none opacity-70"
+            <div className="overflow-y-auto h-64">
+                <table className="text-center w-full">
+                    <thead>
+                        <tr>
+                            {TABLE_HEAD.map((head) => (
+                                <th
+                                    key={head}
+                                    className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
                                 >
-                                    {head}
-                                </Typography>
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colSpan={TABLE_HEAD.length}>
-                            {/* Scrollable Table Body */}
-                            <div className="overflow-y-scroll h-64">
-                                <table className="w-full">
-                                    <tbody>
-                                        {filteredRows.map((row, index) => {
-                                            const classes = "p-4 border-b border-blue-gray-50";
-                                            return (
-                                                <tr key={index}>
-                                                    {row.map((cell, cellIndex) => (
-                                                        <td key={cellIndex} className={classes}>
-                                                            <Typography
-                                                                variant="small"
-                                                                color="blue-gray"
-                                                                className="font-normal"
-                                                            >
-                                                                {cell}
-                                                            </Typography>
-                                                        </td>
-                                                    ))}
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="font-normal leading-none opacity-70"
+                                    >
+                                        {head}
+                                    </Typography>
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredRows.map((row, index) => {
+                            const classes = "p-4 border-b border-blue-gray-50";
+                            return (
+                                <tr key={index}>
+                                    {row.map((cell, cellIndex) => (
+                                        <td key={cellIndex} className={classes}>
+                                            <Typography
+                                                variant="small"
+                                                color="blue-gray"
+                                                className="font-normal"
+                                            >
+                                                {cell}
+                                            </Typography>
+                                        </td>
+                                    ))}
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
