@@ -1,7 +1,8 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, BellIcon, XMarkIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 import Table from '../components/table.jsx';
-import Circles from '../components/circles.jsx';
+import PieChart from '../components/PieChart.jsx';
+import Chart from '../components/chart.jsx';
 
 
 const user = {
@@ -71,7 +72,7 @@ export default function Dashboard() {
                   type="button"
                   className="relative p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
-                  <ArrowLeftOnRectangleIcon className="h-6 w-6" />
+                  <ArrowRightOnRectangleIcon className="h-6 w-6" />
                 </button>
               </div>
             </div>
@@ -97,14 +98,7 @@ export default function Dashboard() {
                 <div className="text-base font-medium leading-none text-white">{user.name}</div>
                 <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
               </div>
-              <button
-                type="button"
-                className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              >
-                <span className="absolute -inset-1.5" />
-                <span className="sr-only">View notifications</span>
-                <BellIcon aria-hidden="true" className="h-6 w-6" />
-              </button>
+          
             </div>
             <div className="mt-3 space-y-1 px-2">
               {userNavigation.map((item) => (
@@ -123,8 +117,49 @@ export default function Dashboard() {
       </Disclosure>
 
       <main className='flex flex-col'>
-        <Table />
-        <Circles></Circles>
+
+              <div className='flex flex-row justify-around mx-12 my-6'>
+              <div className='bg-white w-96 rounded-md mr-12'>
+        <div>
+                    <h1 className="font-semibold ml-6 mt-6">
+                        Topology
+                    </h1>
+                </div>
+          <img 
+          className='mt-12 my-6 ml-8'
+          src="../../public/topology.png" alt="topology" />
+        </div>
+
+                 <Table />
+                  
+              </div>
+
+              <div className='flex flex-col mx-12 my-6 md:flex-row justify-between space-y-4 md:space-y-0 md:space-x-6'>
+    <div className='bg-white rounded-md shadow flex-1 '>
+      <PieChart />
+    </div>
+    <div className='bg-white rounded-md shadow flex-1'>
+      <Chart />
+    </div>
+    <div className='flex flex-col justify-between'>
+                    < div className='bg-[#3EA0A3] rounded-md px-4 py-4 text-center'>
+                        <h1 className='text-2xl font-semibold'>Max Bandwith Offer</h1> 
+                        <p className='text-3xl font-bold'>10 Mbps</p>
+                    </div>
+                    < div className='bg-white rounded-md px-4 py-4 text-center'>
+                        <h1 className='text-2xl font-semibold'>Client's Number</h1>
+                        <p className='text-3xl font-bold'> 2</p>
+                    </div>
+                    < div className='bg-[#C7F5C7] rounded-md px-4 py-4 text-center'>
+                        <h1 className='text-2xl font-semibold'>Online Client's Number</h1> 
+                        <p className='text-3xl font-bold'> 2</p>
+                    </div>
+              </div>
+
+
+  </div>
+        
+          
       </main>
     </div>
   );

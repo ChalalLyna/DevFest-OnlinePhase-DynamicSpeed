@@ -117,7 +117,7 @@ export default function Login() {
         </div>
 
         {/* Right section - Image (Hidden on mobile) */}
-        <div className="hidden md:flex md:w-1/2 flex-col mt-4 justify-center items-center">
+        <div className="hidden bg-[#373A40] md:flex md:w-1/2 flex-col rounded-tr-md rounded-br-md pt-4 justify-center items-center">
           <img
             src="../public/logo.png"
             alt="Logo"

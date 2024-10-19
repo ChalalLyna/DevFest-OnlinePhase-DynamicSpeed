@@ -17,9 +17,6 @@ const TABLE_ROWS = [
 ];
 
 export default function Table() {
-    const [visibleRows, setVisibleRows] = useState(5); // Initial number of visible rows
-    const [isExpanded, setIsExpanded] = useState(false); // State to track if the table is expanded
-
     // Filter states
     const [dateFilter, setDateFilter] = useState("");
     const [timeFilter, setTimeFilter] = useState("");
@@ -35,18 +32,13 @@ export default function Table() {
         );
     });
 
-    const handleSeeMore = () => {
-        setVisibleRows(TABLE_ROWS.length); // Show all rows
-        setIsExpanded(true); // Set to expanded state
-    };
-
-    const handleSeeLess = () => {
-        setVisibleRows(5); // Reset to initial 5 rows
-        setIsExpanded(false); // Set to not expanded state
-    };
-
     return (
-        <div className="bg-white w-1/2 p-6 rounded-md ">
+        <div className="bg-white w-2/3 p-6 rounded-md ">
+            <div>
+            <h1 className="font-semibold ml-6 mb-6">
+                        Connection speed by client over time
+                    </h1>
+            </div>
             {/* Filters */}
             <div className="flex mb-4">
                 <div className="w-36 mr-6">
@@ -99,46 +91,37 @@ export default function Table() {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredRows.slice(0, visibleRows).map((row, index) => {
-                        const classes = "p-4 border-b border-blue-gray-50";
-
-                        return (
-                            <tr key={index}>
-                                {row.map((cell, cellIndex) => (
-                                    <td key={cellIndex} className={classes}>
-                                        <Typography
-                                            variant="small"
-                                            color="blue-gray"
-                                            className="font-normal"
-                                        >
-                                            {cell}
-                                        </Typography>
-                                    </td>
-                                ))}
-                            </tr>
-                        );
-                    })}
+                    <tr>
+                        <td colSpan={TABLE_HEAD.length}>
+                            {/* Scrollable Table Body */}
+                            <div className="overflow-y-scroll h-64">
+                                <table className="w-full">
+                                    <tbody>
+                                        {filteredRows.map((row, index) => {
+                                            const classes = "p-4 border-b border-blue-gray-50";
+                                            return (
+                                                <tr key={index}>
+                                                    {row.map((cell, cellIndex) => (
+                                                        <td key={cellIndex} className={classes}>
+                                                            <Typography
+                                                                variant="small"
+                                                                color="blue-gray"
+                                                                className="font-normal"
+                                                            >
+                                                                {cell}
+                                                            </Typography>
+                                                        </td>
+                                                    ))}
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-
-            {/* See More / See Less buttons */}
-            <div className="flex justify-center mt-4">
-                {isExpanded ? ( // Show "See Less" when expanded
-                    <button
-                        onClick={handleSeeLess}
-                        className="text-[#3EA0A3] hover:underline pr-6"
-                    >
-                        See Less
-                    </button>
-                ) : ( // Show "See More" when not expanded
-                    <button
-                        onClick={handleSeeMore}
-                        className="text-[#3EA0A3] hover:underline pr-6 "
-                    >
-                        See More
-                    </button>
-                )}
-            </div>
         </div>
     );
 }
