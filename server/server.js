@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(cors({
     origin: 'http://localhost:5173', // Your frontend URL
-    methods: ['GET', 'POST'], // Specify allowed methods
+    methods: ['GET', 'POST', 'PUT'], // Specify allowed methods
     credentials: true // If you need to allow cookies or other credentials
 }));
 
@@ -88,6 +88,7 @@ app.post('/bandwidth', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 // Start the server
 app.listen(PORT, () => {

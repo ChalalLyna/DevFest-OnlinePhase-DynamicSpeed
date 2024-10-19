@@ -7,6 +7,7 @@ const TABLE_HEAD = ["Date", "Time", "Client ID", "Max BW", "BW Requested (Mbps)"
 export default function Table() {
   const [rows, setRows] = useState([]); // State to store rows from API
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({ date: '', time: '', clientId: '' }); // Filters state
 
   // Fetch data from the backend
   useEffect(() => {
@@ -49,10 +50,52 @@ export default function Table() {
     fetchData();
   }, []);
 
+  // Function to handle filter input changes
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+  };
+
+  // Function to filter rows based on the selected filters
+  const filteredRows = rows.filter(row => {
+    const [date, time, clientId] = row;
+    const dateMatch = filters.date ? date === filters.date : true;
+    const timeMatch = filters.time ? time === filters.time : true;
+    const clientIdMatch = filters.clientId ? clientId.toString() === filters.clientId : true;
+
+    return dateMatch && timeMatch && clientIdMatch;
+  });
+
   return (
-    <div className="bg-white w-2/3 p-6 rounded-md ">
+    <div className="bg-white w-2/3 p-6 rounded-md">
       <div>
         <h1 className="font-semibold ml-6 mb-6">Connection speed by client over time</h1>
+      </div>
+
+      {/* Filters */}
+      <div className="flex mb-4 space-x-4">
+        <input
+          type="date"
+          name="date"
+          value={filters.date}
+          onChange={handleFilterChange}
+          className="border p-2 rounded"
+        />
+        <input
+          type="time"
+          name="time"
+          value={filters.time}
+          onChange={handleFilterChange}
+          className="border p-2 rounded"
+        />
+        <input
+          type="number"
+          name="clientId"
+          value={filters.clientId}
+          onChange={handleFilterChange}
+          placeholder="Client ID"
+          className="border p-2 rounded"
+        />
       </div>
 
       {/* Table */}
@@ -76,7 +119,7 @@ export default function Table() {
               </tr>
             </thead>
             <tbody>
-              {rows.length === 0 ? (
+              {filteredRows.length === 0 ? (
                 <tr>
                   <td colSpan={TABLE_HEAD.length} className="p-4">
                     <Typography variant="small" color="blue-gray" className="font-normal">
@@ -85,7 +128,7 @@ export default function Table() {
                   </td>
                 </tr>
               ) : (
-                rows.map((row, index) => (
+                filteredRows.map((row, index) => (
                   <tr key={index}>
                     {row.map((cell, cellIndex) => (
                       <td key={cellIndex} className="p-4 border-b border-blue-gray-50">
