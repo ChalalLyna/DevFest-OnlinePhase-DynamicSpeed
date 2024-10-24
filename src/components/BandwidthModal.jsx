@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const BandwidthModal = ({ isOpen, onClose, onSubmit }) => {
     const [clientId, setClientId] = useState('');
-    const [bandwidth, setBandwidth] = useState(10); // Starts with 10 kbps
+    const [bandwidth, setBandwidth] = useState(1); // Starts with 10 kbps
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -29,16 +29,16 @@ const BandwidthModal = ({ isOpen, onClose, onSubmit }) => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="bandwidth" className="block text-sm font-medium text-gray-700">Bandwidth (10 Kbps increments)</label>
+                            <label htmlFor="bandwidth" className="block text-sm font-medium text-gray-700">Max bandwidth</label>
                             <input
                                 type="number"
                                 id="bandwidth"
                                 value={bandwidth}
-                                onChange={(e) => setBandwidth(Math.max(10, Math.min(e.target.value, 1000)))}
+                                onChange={(e) => setBandwidth(Math.max(1, Math.min(e.target.value, 1000)))}
                                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                min="10"
+                                min="1"
                                 max="1000"
-                                step="10"
+                                step="1"
                                 required
                             />
                         </div>
