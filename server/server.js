@@ -70,7 +70,7 @@ app.get('/bandwidth', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-
+l
 // Route to create a new Bandwidth record
 app.post('/bandwidth', async (req, res) => {
     const { bandwidthLimit, bandwidthRequested, connectionSpeed, clientId } = req.body;
@@ -89,6 +89,38 @@ app.post('/bandwidth', async (req, res) => {
     }
 });
 
+
+// New Route to Update Bandwidth for a Client
+app.post('/update-bandwidth', async (req, res) => {
+    const { clientId, bandwidth } = req.body;
+
+    if (!clientId || !bandwidth) {
+        return res.status(400).json({ message: 'Missing clientId or bandwidth' });
+    }
+
+    try {
+        const connection = await mysql.createConnection(dbConfig);
+
+        // Update the bandwidthLimit for the given clientId
+        const [result] = await connection.execute(
+            'UPDATE Bandwidth SET bandwidthLimit = ? WHERE clientId = ?',
+            [bandwidth, clientId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Client not found or no change in bandwidth' });
+        }
+
+        res.json({ message: 'Bandwidth updated successfully', clientId, bandwidth });
+    } catch (error) {
+        console.error('Error updating bandwidth:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`, req.body);
+    next();
+});
 
 // Start the server
 app.listen(PORT, () => {

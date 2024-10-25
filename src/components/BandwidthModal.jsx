@@ -1,14 +1,40 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Import axios
 
 const BandwidthModal = ({ isOpen, onClose, onSubmit }) => {
     const [clientId, setClientId] = useState('');
-    const [bandwidth, setBandwidth] = useState(1); // Starts with 10 kbps
+    const [bandwidth, setBandwidth] = useState(1); // Starts with 1 kbps
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(`Client ID: ${clientId}, Bandwidth: ${bandwidth} kbps`);
-        onSubmit(clientId, bandwidth); // Call the onSubmit function with the clientId and bandwidth
-        onClose(); // Close the modal after submission
+        console.log('Form submitted');
+
+        // Construct the data to be sent in the POST request
+        const postData = {
+            clientId: clientId,
+            bandwidth: bandwidth,
+        };
+
+        console.log(clientId, bandwidth);
+
+        try {
+            // Ensure the URL matches your backend route
+            const response = await axios.post('http://localhost:5000/update-bandwidth', postData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            console.log('POST request successful', response.data);
+            onSubmit(clientId, bandwidth);  // This is where you handle any logic in the parent component after submission
+            onClose();  // Close the modal after successful submission
+        } catch (error) {
+            if (error.response) {
+                console.error('POST request failed', error.response.status, error.response.data);
+            } else {
+                console.error('Error during POST request:', error.message);
+            }
+        }
     };
 
     return (
@@ -18,7 +44,9 @@ const BandwidthModal = ({ isOpen, onClose, onSubmit }) => {
                     <h2 className="text-lg font-bold mb-4">Change Bandwidth Max Value</h2>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
-                            <label htmlFor="clientId" className="block text-sm font-medium text-gray-700">Client ID</label>
+                            <label htmlFor="clientId" className="block text-sm font-medium text-gray-700">
+                                Client ID
+                            </label>
                             <input
                                 type="text"
                                 id="clientId"
@@ -29,7 +57,9 @@ const BandwidthModal = ({ isOpen, onClose, onSubmit }) => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="bandwidth" className="block text-sm font-medium text-gray-700">Max bandwidth</label>
+                            <label htmlFor="bandwidth" className="block text-sm font-medium text-gray-700">
+                                Max bandwidth
+                            </label>
                             <input
                                 type="number"
                                 id="bandwidth"

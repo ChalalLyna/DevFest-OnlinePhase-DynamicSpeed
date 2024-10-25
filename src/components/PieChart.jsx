@@ -164,7 +164,17 @@ export default function PieChartComponent() {
                 </div>
             </CardBody>
 
-            <BandwidthModal isOpen={isModalOpen} onClose={handleCloseModal} /> {/* Modal component */}
+            <BandwidthModal 
+    isOpen={isModalOpen} 
+    onClose={handleCloseModal} 
+    onSubmit={(clientId, bandwidth) => {
+        // Handle the submission logic here if necessary
+        console.log(`Submitted Client ID: ${clientId}, Bandwidth: ${bandwidth}`);
+        // Update your state if needed
+        // For example, if you're tracking the clientData, you might want to refresh it here
+    }}
+/>
+
         </div>
     );
 }
