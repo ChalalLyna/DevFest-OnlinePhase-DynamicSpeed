@@ -70,7 +70,7 @@ app.get('/bandwidth', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-l
+
 // Route to create a new Bandwidth record
 app.post('/bandwidth', async (req, res) => {
     const { bandwidthLimit, bandwidthRequested, connectionSpeed, clientId } = req.body;
